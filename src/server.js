@@ -7,16 +7,20 @@ import presupuestoRoutes from './routes/presupuesto.routes.js'
 dotenv.config({ path: fileURLToPath(new URL('./.env', import.meta.url)) })
 
 if (!process.env.GEMINI_API_KEY) {
-  throw new Error('Falta GEMINI_API_KEY. Revisa el archivo src/.env')
+  throw new Error('Falta GEMINI_API_KEY. Revisa las variables de entorno.')
 }
-
 
 console.log('API Key cargada:', process.env.GEMINI_API_KEY ? 'Sí' : 'No')
 
 const app = express()
 const PORT = process.env.PORT || 3000
 
-app.use(cors())
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.FRONTEND_URL // https://presupuesto-free.vercel.app
+].filter(Boolean)
+
+app.use(cors({ origin: allowedOrigins }))
 app.use(express.json())
 
 app.get('/', (req, res) => {
@@ -26,5 +30,5 @@ app.get('/', (req, res) => {
 app.use('/api', presupuestoRoutes)
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`)
+  console.log(`Servidor corriendo en el puerto ${PORT}`)
 })
