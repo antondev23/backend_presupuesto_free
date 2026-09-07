@@ -14,6 +14,7 @@ Datos del proyecto:
 - Descripción: ${descripcion || 'Sin descripción adicional'}
 
 Responde ÚNICAMENTE con un JSON válido (sin markdown, sin texto adicional) con esta estructura exacta:
+    (mostrando siempre una respuesta amigable y profesional, sin usar lenguaje técnico innecesario)
 {
   "precioMinimo": number,
   "precioRecomendado": number,
