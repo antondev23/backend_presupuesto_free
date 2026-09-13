@@ -17,7 +17,8 @@ const PORT = process.env.PORT || 3000
 
 const allowedOrigins = [
   'http://localhost:5173',
-  process.env.FRONTEND_URL // https://presupuesto-free.vercel.app
+  'https://presupuesto.antondev.es',
+  process.env.FRONTEND_URL?.replace(/\/$/, ''),
 ].filter(Boolean)
 
 app.use(cors({ origin: allowedOrigins }))
