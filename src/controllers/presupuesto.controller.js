@@ -15,6 +15,11 @@ function arrayOrFallback(value, fallback) {
         : fallback
 }
 
+function isGeminiTemporarilyUnavailable(error) {
+    const status = error?.status || error?.code || error?.error?.code
+    return Number(status) === 503 || error?.status === 'UNAVAILABLE'
+}
+
 function parseJsonResponse(text) {
     const responseText = String(text || '').trim()
     const jsonStart = responseText.indexOf('{')
@@ -150,6 +155,14 @@ Responde ÚNICAMENTE con un JSON válido, sin markdown ni texto adicional, usand
         res.json(resultado)
     } catch (error) {
         console.error('Error llamando a Gemini:', error)
-        res.status(500).json({ error: error.message || 'Error al conectar con la IA' })
+
+        if (isGeminiTemporarilyUnavailable(error)) {
+            return res.status(503).json({
+                error: 'El servidor de IA Gemini está temporalmente ocupado y no puede atender tu petición en estos momentos. Prueba de nuevo dentro de unos segundos.',
+                code: 'GEMINI_TEMPORARILY_UNAVAILABLE',
+            })
+        }
+
+        res.status(500).json({ error: error.message || 'Error al conectar con la IA GEMINI, INTENTA NUEVAMENTE EN UNOS SEGUNDOS'  })
     }
 }
