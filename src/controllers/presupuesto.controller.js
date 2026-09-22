@@ -146,7 +146,7 @@ Responde ÚNICAMENTE con un JSON válido, sin markdown ni texto adicional, usand
     `.trim()
 
         const response = await genAI.models.generateContent({
-            model: 'gemini-3.6-flash',
+            model: 'gemini-3.5-flash-lite',
             contents: prompt,
         })
 
